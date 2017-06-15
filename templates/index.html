@@ -31,7 +31,7 @@
 	function el(id){return document.getElementById(id);} // Get elem by ID
 
 function readImage() {
-    if ( this.files && this.files[0] ) {
+    if ( this.files && this.files[0] && this.files[0].type.match('image.*')) {
         var FR= new FileReader();
         FR.onload = function(e) {
              el("img").src = e.target.result;
