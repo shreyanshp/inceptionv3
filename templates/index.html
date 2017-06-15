@@ -51,7 +51,7 @@ $("#predic").click(function(){
                     url: $SCRIPT_ROOT + "/predict/",
                     data: globalimg,
                     success: function(data){
-                        $('#result').text(' Predicted Output: '+data);
+                        $('#result').text(' Predicted Output: '+ JSON.stringify(data));
                     }
                 });
             });

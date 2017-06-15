@@ -11,8 +11,17 @@ from flask import Flask, render_template,request, current_app, jsonify
 import io
 import model
 import base64
+import re
 #initalize our flask app
 app = Flask(__name__)
+
+#decoding an image from base64 into raw representation
+def convertImage(imgData1):
+	imgstr = re.search(r'base64,(.*)',imgData1).group(1)
+	#print(imgstr)
+	with open('output.png','wb') as output:
+		output.write(imgstr.decode('base64'))
+
 
 @app.route('/')
 def index():
@@ -20,11 +29,13 @@ def index():
 	#render out pre-built HTML file right on the index page
 	return render_template("index.html")
 
-@app.route('/predict/',methods=['POST'])
+@app.route('/predict/',methods=['GET','POST'])
 def predict():
 	data = {}
 	try:
-		data = request.get_json()['data']
+		data = request.get_data()
+		imgstr = re.search(r'base64,(.*)',data).group(1)
+		data = imgstr
 	except KeyError:
 		return jsonify(status_code='400', msg='Bad Request'), 400
 
@@ -33,7 +44,6 @@ def predict():
 	predictions = model.predict(image)
 	current_app.logger.info('Predictions: %s', predictions)
 	return jsonify(predictions=predictions)
-	
 
 if __name__ == "__main__":
 	app.run()
