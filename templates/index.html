@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<meta charset=utf-8 />
+<title>Shreyansh - Keras - InceptionV3 Model</title>
+</head>
+<body>
+  
+
+<input type='file' id="asd" />
+<br>
+<img id="img" src="{{ url_for('static',filename='1x1.png') }}" />
+<!-- <div id="base"></div> -->
+
+<a href="#" class="myButton" id = "predic"><span style=" font-weight: 400; font-family: 'Open Sans', Helvetica; "> Predict </span></a>  
+
+<input type="button" id="clearButton" value="Clear"  class = "myButton" style="font-weight: 400; font-family: 'Open Sans', Helvetica;   ">
+
+<div  class="form-group">
+    <h1 id="result"><span> </span></h1>
+</div>
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+
+<script type="text/javascript">
+
+    var globalimg;
+	
+	function el(id){return document.getElementById(id);} // Get elem by ID
+
+function readImage() {
+    if ( this.files && this.files[0] ) {
+        var FR= new FileReader();
+        FR.onload = function(e) {
+             el("img").src = e.target.result;
+             //el("base").innerHTML = e.target.result;
+             globalimg = e.target.result;
+        };       
+        FR.readAsDataURL( this.files[0] );
+    }
+}
+
+el("asd").addEventListener("change", readImage, false);
+
+$("#predic").click(function(){
+                var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+                $.ajax({
+                    type: "POST",
+                    url: $SCRIPT_ROOT + "/predict/",
+                    data: globalimg,
+                    success: function(data){
+                        $('#result').text(' Predicted Output: '+data);
+                    }
+                });
+            });
+
+</script>
+
+  
+</body>
+</html>
