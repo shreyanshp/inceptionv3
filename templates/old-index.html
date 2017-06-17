@@ -3,7 +3,7 @@
 <head>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <meta charset=utf-8 />
-<title>Shreyansh - InceptionV3</title>
+<title>Shreyansh - Keras - InceptionV3 Model</title>
 </head>
 <body>
   
@@ -26,7 +26,7 @@
 
 <script type="text/javascript">
 
-	var globalimg;
+    var globalimg;
 	
 	function el(id){return document.getElementById(id);} // Get elem by ID
 
@@ -34,24 +34,11 @@ function readImage() {
     if ( this.files && this.files[0] && this.files[0].type.match('image.*')) {
         var FR= new FileReader();
         FR.onload = function(e) {
-              var img=new Image();
-              img.onload=function(){
-                  var canvas=document.createElement("canvas");
-                  var ctx=canvas.getContext("2d");
-                  canvas.width=299;
-                  canvas.height=299;
-                  ctx.drawImage(img,0,0,img.width,img.height,0,0,canvas.width,canvas.height);
-                  el("img").src  = canvas.toDataURL("image/png");
-                  //el("base").innerHTML = canvas.toDataURL("image/png");
-                  globalimg = canvas.toDataURL("image/png");
-
-              }
-              img.src=e.target.result;
+             el("img").src = e.target.result;
+             //el("base").innerHTML = e.target.result;
+             globalimg = e.target.result;
         };       
         FR.readAsDataURL( this.files[0] );
-    } else {
-        el("img").src = "";
-        el("result").innerHTML = "Incorrect File Type provided, use only images";
     }
 }
 
